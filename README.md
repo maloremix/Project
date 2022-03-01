@@ -21,4 +21,5 @@
 * https://github.com/MikhailAfanasjev
 
 ### Ссылки
+https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1
 
