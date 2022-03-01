@@ -1,6 +1,6 @@
 ## YourSadFriend 
 ### Тематическая соцсеть на случай плохого настроения, нужды в поддержке и общении
-#### Социальная сеть с открытым исходным кодом
+Социальная сеть с открытым исходным кодом
 
 ### Cтэк технологий
 1. [Django](https://docs.djangoproject.com/en/3.1/)
@@ -16,9 +16,9 @@
 6. Система рейтинга "общения" пользователей ("лайки" от собеседника)  
 
 ### Разработчики
-*https://github.com/maloremix
-*https://github.com/evseeeva
-*https://github.com/MikhailAfanasjev
+* https://github.com/maloremix
+* https://github.com/evseeeva
+* https://github.com/MikhailAfanasjev
 
 ### Ссылки
 
