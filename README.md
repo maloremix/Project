@@ -2,10 +2,6 @@
 Тематическая соцсеть на случай плохого настроения, нужды в поддержке и общении
 Социальная сеть с открытым исходным кодом
 
-### Cтэк технологий
-1. [Django](https://docs.djangoproject.com/en/3.1/)
-2. [Sqlite](https://www.sqlite.org/docs.html)
-3. [Web Socket (Django Channel)](https://channels.readthedocs.io/en/latest/)
 
 ### Основной функционал
 1. Создание профиля/Авторизация
