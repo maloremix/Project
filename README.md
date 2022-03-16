@@ -12,10 +12,12 @@
 6. Система рейтинга "общения" пользователей ("лайки" от собеседника)  
 
 ### Разработчики
-* https://github.com/maloremix
-* https://github.com/evseeeva
-* https://github.com/MikhailAfanasjev
+Группа ТП-32
+* [Апарин](https://github.com/maloremix)
+* [Евсеева](https://github.com/evseeeva)
+* [Афанасьев](https://github.com/MikhailAfanasjev)
 
 ### Ссылки
-https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1
+[Miro](https://miro.com/app/board/uXjVOFsysG0=/)
+[Jira](https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1)
 
