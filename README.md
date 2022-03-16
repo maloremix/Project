@@ -14,10 +14,10 @@
 ### Разработчики
 Группа ТП-32
 * [Апарин](https://github.com/maloremix)
-* [Евсеева](https://github.com/evseeeva)
+*  [Евсеева](https://github.com/evseeeva)
 * [Афанасьев](https://github.com/MikhailAfanasjev)
 
 ### Ссылки
-[Miro](https://miro.com/app/board/uXjVOFsysG0=/)
-[Jira](https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1)
+* [Miro](https://miro.com/app/board/uXjVOFsysG0=/)
+* [Jira](https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1)
 
