@@ -12,9 +12,9 @@
 
 ### Разработчики
 Группа ТП-32
-* [Апарин](https://github.com/maloremix)
-*  [Евсеева](https://github.com/evseeeva)
-* [Афанасьев](https://github.com/MikhailAfanasjev)
+* [Апарин Илья](https://github.com/maloremix)
+*  [Евсеева Анастасия](https://github.com/evseeeva)
+* [Афанасьев Михаил](https://github.com/MikhailAfanasjev)
 
 ### Ссылки
 * [Miro](https://miro.com/app/board/uXjVOFsysG0=/)
