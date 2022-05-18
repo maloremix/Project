@@ -17,6 +17,7 @@
 * [Афанасьев Михаил](https://github.com/MikhailAfanasjev)
 
 ### Ссылки
+* [Код](https://github.com/maloremix/Project-3-2/tree/master)
 * [Miro](https://miro.com/app/board/uXjVOFsysG0=/)
 * [Jira](https://yoursadfriend.atlassian.net/jira/software/projects/SN/boards/1)
 
