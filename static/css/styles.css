@@ -22,6 +22,24 @@ ul.mainmenu li {
 	margin: 18px 40px 0 50px;
 }
 
+ul.list-posts {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	max-width: 600px;
+}
+ul.list-posts li {
+	margin: 20px 0 0 0;
+	border: 2px solid #00FFFF;
+	overflow-wrap: break-word;
+}
+
+textarea {
+	width: 20%; /* Ширина поля в процентах */
+    height: 100px; /* Высота поля в пикселах */
+    resize: none; /* Запрещаем изменять размер */
+} 
+
 ul.mainmenu li a {
 	color: #444;
 	text-decoration: none;

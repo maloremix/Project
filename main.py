@@ -1,3 +1,4 @@
+import math
 import os
 import sqlite3
 
@@ -101,10 +102,15 @@ def login():
 
     return render_template("login.html", title="Авторизация", form=form)
 
-@app.route('/profile')
+@app.route('/profile', methods=["POST", "GET"])
 @login_required
 def profile():
-    return render_template("profile.html", title="Профиль")
+    if request.method == "POST":
+        if len(request.form['text']) > 0:
+            dbase.addPost(request.form['text'])
+    posts = dbase.getPosts()
+
+    return render_template("profile.html", title="Профиль", posts=posts)
 
 @app.route('/userava')
 @login_required
