@@ -35,6 +35,23 @@ class FDataBase:
             print("Ошибка добавления статьи в БД " + str(e))
             return False
 
+    def deletePost(self, id):
+        try:
+            id = int(id)
+            self.__cur.execute(f"""
+delete from posts
+where id=(select min(id) from posts
+where id not in
+(SELECT id
+FROM posts
+order by id LIMIT '{id-1}'))
+;""")
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка удаления статьи из БД "+str(e))
+            return False
+        return True
+
     def getPosts(self):
         sql = '''SELECT * FROM posts'''
         try:

@@ -29,9 +29,20 @@ ul.list-posts {
 	max-width: 600px;
 }
 ul.list-posts li {
-	margin: 20px 0 0 0;
 	border: 2px solid #00FFFF;
 	overflow-wrap: break-word;
+}
+
+ul.list-posts a {
+    display: block;
+    margin: 20 0 0 0;
+    float: right;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 textarea {

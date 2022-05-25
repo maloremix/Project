@@ -112,6 +112,15 @@ def profile():
 
     return render_template("profile.html", title="Профиль", posts=posts)
 
+@app.route('/delete', methods=["POST", "GET"])
+@login_required
+def delete():
+    if request.method == "GET":
+        id = request.args.get("id")
+        dbase.deletePost(id)
+    return redirect("profile")
+
+
 @app.route('/userava')
 @login_required
 def userava():

@@ -27,6 +27,9 @@
 
 <ul class="list-posts">
 {% for p in posts %}
+<div class ="clearfix">
+<a class="delete{{foo}}" href="/delete?id={{loop.index}}">Удалить</a>
+</div>
 <li>
 <p class="post">{{ p.content }}</p>
 </li>
@@ -34,7 +37,7 @@
 </ul>
 
 <form action="" method="post">
-	<p><b>Введите ваш отзыв:</b></p>
+	<p><b>Введите ваш пост:</b></p>
     <p><textarea rows="10" cols="45" name="text"></textarea></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
