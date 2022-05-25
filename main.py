@@ -88,7 +88,7 @@ def register():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('profile'))
+        return redirect('profile/' + current_user.get_id())
     form = LoginForm()
     if form.validate_on_submit():
         user = dbase.getUserByEmail(form.email.data)
@@ -96,19 +96,19 @@ def login():
             userlogin = UserLogin().create(user)
             rm = form.remember.data
             login_user(userlogin, remember=rm)
-            return redirect(request.args.get("next") or url_for("profile"))
+            return redirect(request.args.get("next") or "profile/" + current_user.get_id())
 
         flash("Неверная пара логин/пароль", "error")
 
     return render_template("login.html", title="Авторизация", form=form)
 
-@app.route('/profile', methods=["POST", "GET"])
+@app.route('/profile/<id>', methods=["POST", "GET"])
 @login_required
-def profile():
+def profile(id):
     if request.method == "POST":
         if len(request.form['text']) > 0:
-            dbase.addPost(request.form['text'])
-    posts = dbase.getPosts()
+            dbase.addPost(current_user.get_id(), request.form['text'])
+    posts = dbase.getPostsById(current_user.get_id())
 
     return render_template("profile.html", title="Профиль", posts=posts)
 
@@ -117,8 +117,8 @@ def profile():
 def delete():
     if request.method == "GET":
         id = request.args.get("id")
-        dbase.deletePost(id)
-    return redirect("profile")
+        dbase.deletePost(id, current_user.get_id())
+    return redirect("profile/" + current_user.get_id())
 
 
 @app.route('/userava')

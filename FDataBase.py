@@ -26,25 +26,25 @@ class FDataBase:
 
         return True
 
-    def addPost(self, text):
+    def addPost(self, user_id, text):
         try:
             tm = math.floor(time.time())
-            self.__cur.execute("INSERT INTO posts VALUES(NULL, NULL, ?, ?)", (text, tm))
+            self.__cur.execute("INSERT INTO posts VALUES(NULL, ?, ?, ?)", (user_id, text, tm))
             self.__db.commit()
         except sqlite3.Error as e:
             print("Ошибка добавления статьи в БД " + str(e))
             return False
 
-    def deletePost(self, id):
+    def deletePost(self, id_del, user_id):
         try:
-            id = int(id)
+            id_del = int(id_del)
             self.__cur.execute(f"""
 delete from posts
 where id=(select min(id) from posts
 where id not in
 (SELECT id
-FROM posts
-order by id LIMIT '{id-1}'))
+FROM posts where user_id = '{user_id}'
+order by id LIMIT '{id_del-1}') and user_id = '{user_id}')
 ;""")
             self.__db.commit()
         except sqlite3.Error as e:
@@ -54,6 +54,17 @@ order by id LIMIT '{id-1}'))
 
     def getPosts(self):
         sql = '''SELECT * FROM posts'''
+        try:
+            self.__cur.execute(sql)
+            res = self.__cur.fetchall()
+            if res: return res
+        except:
+            print("Ошибка чтения из БД")
+        return []
+
+
+    def getPostsById(self, user_id):
+        sql = f'''SELECT * FROM posts WHERE user_id = '{user_id}';'''
         try:
             self.__cur.execute(sql)
             res = self.__cur.fetchall()
