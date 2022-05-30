@@ -35,22 +35,42 @@ class FDataBase:
             print("Ошибка добавления статьи в БД " + str(e))
             return False
 
-    def deletePost(self, id_del, user_id):
+    def deletePost(self, id_del):
         try:
-            id_del = int(id_del)
-            self.__cur.execute(f"""
-delete from posts
-where id=(select min(id) from posts
-where id not in
-(SELECT id
-FROM posts where user_id = '{user_id}'
-order by id LIMIT '{id_del-1}') and user_id = '{user_id}')
-;""")
+            self.__cur.execute(f"delete from posts where id= '{id_del}'")
             self.__db.commit()
         except sqlite3.Error as e:
             print("Ошибка удаления статьи из БД "+str(e))
             return False
         return True
+
+    def likePost(self,  id_user_liked, id_liked_post):
+        try:
+            self.__cur.execute(f"SELECT * FROM likes where post_id='{id_liked_post}' and user_id='{id_user_liked}'")
+            res = self.__cur.fetchone()
+            if not res:
+                self.__cur.execute(f"INSERT INTO likes VALUES(NULL, ?, ?, ?)", (id_user_liked, id_liked_post, 1))
+            else:
+                if res['isLike']:
+                    self.__cur.execute(f"UPDATE likes SET isLike = 0 where post_id='{id_liked_post}' and user_id='{id_user_liked}'")
+                else:
+                    self.__cur.execute(
+                        f"UPDATE likes SET isLike = 1 where post_id='{id_liked_post}' and user_id='{id_user_liked}'")
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка при обработке лайка из БД "+str(e))
+            return False
+        return True
+
+    def getLikesById(self, user_id):
+        try:
+            self.__cur.execute(f"SELECT * from likes where user_id = '{user_id}'")
+            res = self.__cur.fetchall()
+        except sqlite3.Error as e:
+            print("Ошибка при получении лайков из БД "+str(e))
+            return False
+        return res
+
 
     def getPosts(self):
         sql = '''SELECT * FROM posts'''
@@ -86,6 +106,47 @@ order by id LIMIT '{id_del-1}') and user_id = '{user_id}')
             print("Ошибка получения данных из БД "+str(e))
 
         return False
+
+
+    def addDialog(self, id_user1, id_user2):
+        try:
+            self.__cur.execute(f"SELECT * FROM dialogs WHERE user_id1 = '{id_user1}' and user_id2 = '{id_user2}' or user_id1 = '{id_user2}' and user_id2 = '{id_user1}'")
+            res = self.__cur.fetchone()
+            if res:
+                return
+            self.__cur.execute(f"INSERT INTO dialogs VALUES(NULL, ?, ?)", (id_user1, id_user2))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления диалога в БД "+str(e))
+            return False
+        return True
+
+    def addMessage(self, id_user1, id_user2, content):
+        try:
+            self.__cur.execute(f"INSERT INTO messages VALUES(NULL, ?, ?, ?)", (id_user1, id_user2, content))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления сообщения в БД "+str(e))
+            return False
+        return True
+
+    def getMessages(self, id_user1, id_user2):
+        try:
+            self.__cur.execute(f"SELECT content, name from messages JOIN users ON (messages.user_id1 = users.id) where user_id1 = '{id_user1}' and user_id2 = '{id_user2}' or user_id1 = '{id_user2}' and user_id2 = '{id_user1}'")
+            res = self.__cur.fetchall()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+
+
+    def getDialog(self, id_user1, id_user2):
+        try:
+            self.__cur.execute(f"SELECT * from dialogs WHERE id_user1 = '{id_user1}' and id_user2 = '{id_user2}' or user_id1 = '{id_user2}' and user_id2 = '{id_user1}'")
+            res = self.__cur.fetchone()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка добавления диалога в БД "+str(e))
+            return False
 
     def getUserByEmail(self, email):
         try:

@@ -33,11 +33,18 @@ ul.list-posts li {
 	overflow-wrap: break-word;
 }
 
-ul.list-posts a {
+ul.list-posts a.delete {
     display: block;
     margin: 20 0 0 0;
     float: right;
 }
+
+ul.list-posts a.like {
+    display: block;
+    margin: 0 0 0 0;
+    float: right;
+}
+
 
 .clearfix::after {
   content: "";
@@ -54,6 +61,45 @@ textarea {
 ul.mainmenu li a {
 	color: #444;
 	text-decoration: none;
+}
+
+.name {
+
+margin: 0;
+color: red;
+
+}
+
+.message {
+  margin: 56px 0 0 ;
+  background-color: #42aaff;
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+  line-height: 20px;
+  list-style: none;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.message:hover,
+.message:focus {
+  background-color: #008cf0;
 }
 
 .profile-ava {

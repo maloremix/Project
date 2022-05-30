@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+{{ super() }}
+
+<ul class="list-posts">
+{% for p in posts %}
+
+
+<p class="name">{{p.name}}</p>
+<li>
+<p class="post">{{ p.content }}</p>
+</li>
+{% endfor %}
+</ul>
+<form action="" method="post">
+	<p><b>Введите ваш пост:</b></p>
+    <p><textarea rows="10" cols="45" name="text"></textarea></p>
+    <p><input type="submit" value="Отправить"></p>
+</form>
+
+{% endblock %}

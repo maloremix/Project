@@ -8,19 +8,24 @@
 <table border="0" class="profile-table">
 	<tr><td>
 		<div class="profile-ava"><img src="{{ url_for('userava') }}"></div>
+		{% if user.id|string() == current_user.get_id() %}
 		<div class="profile-load">
 		<form action="{{url_for('upload')}}" method="POST" enctype="multipart/form-data">
 			<p><input type="file" name="file">
 			<p><input type="submit" value="Загрузить">
 		</form>
 		</div>
+		{% endif %}
 	</td>
 	<td valign="top" class="profile-panel">
 		<p><a href="{{url_for('logout')}}">Выйти из профиля</a>
 		<ul class="profile-info">
-		<li>Имя: {{ current_user.getName() }}</li>
-		<li>Email: {{ current_user.getEmail() }}</li>
+		<li>Имя: {{ user.name }}</li>
+		<li>Email: {{ user.email }}</li>
 		</ul>
+		{% if user.id|string() != current_user.get_id() %}
+		<a class="message" href="/dialog?id1={{current_user.get_id()}}&id2={{user.id}}">Написать сообщение</a>
+		{% endif %}
 	</td></tr>
 </table>
 <h1>Посты</h1>
@@ -28,18 +33,41 @@
 <ul class="list-posts">
 {% for p in posts %}
 <div class ="clearfix">
-<a class="delete{{foo}}" href="/delete?id={{loop.index}}">Удалить</a>
+<a class="delete" href="/delete?id={{p.id}}">Удалить</a>
 </div>
 <li>
 <p class="post">{{ p.content }}</p>
 </li>
+<div class ="clearfix">
+{% set count = namespace(value=0) %}
+{% for l in likes if l.post_id == p.id %}
+{% set count.value = 1 %}
+{% if l.isLike %}
+<a class="like" href="/like?id={{p.id}}"><img src="{{url_for('static', filename='images/like.png')}}" width="40"
+   height="40" alt="Пример"></a>
+{% else %}
+<a class="like" href="/like?id={{p.id}}"><img src="{{url_for('static', filename='images/notLike.png')}}" width="40"
+   height="40" alt="Пример"></a>
+{% endif %}
+{% endfor %}
+{% if not count.value %}
+<a class="like" href="/like?id={{p.id}}"><img src="{{url_for('static', filename='images/notLike.png')}}" width="40"
+   height="40" alt="Пример"></a>
+{% endif %}
+</div>
+{% set count.value = 0 %}
 {% endfor %}
 </ul>
 
+
+
+{% if user.id|string() == current_user.get_id() %}
 <form action="" method="post">
 	<p><b>Введите ваш пост:</b></p>
     <p><textarea rows="10" cols="45" name="text"></textarea></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
+{% endif %}
+
 
 {% endblock %}

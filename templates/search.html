@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+{{ super() }}
+<p><label>Выбор настроения: </label>
+<select name="selectPosts" size="1">
+    <option value="null">...</option>
+    <option  value="kek">грустно</option>
+
+</select>
+{% endblock %}

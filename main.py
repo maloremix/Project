@@ -2,7 +2,7 @@ import math
 import os
 import sqlite3
 
-from flask import Flask, render_template, request, g, flash, abort, redirect, url_for, make_response
+from flask import Flask, render_template, request, g, flash, abort, redirect, url_for, make_response, session
 from flask_login import login_user, current_user, LoginManager, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -108,18 +108,57 @@ def profile(id):
     if request.method == "POST":
         if len(request.form['text']) > 0:
             dbase.addPost(current_user.get_id(), request.form['text'])
-    posts = dbase.getPostsById(current_user.get_id())
+    user = dbase.getUser(id)
+    if not user:
+        abort(404)
+    posts = dbase.getPostsById(id)
+    likes = dbase.getLikesById(current_user.get_id())
 
-    return render_template("profile.html", title="Профиль", posts=posts)
+    session['id'] = id
+
+    return render_template("profile.html", title="Профиль", posts=posts, likes=likes, user = user)
 
 @app.route('/delete', methods=["POST", "GET"])
 @login_required
 def delete():
     if request.method == "GET":
         id = request.args.get("id")
-        dbase.deletePost(id, current_user.get_id())
-    return redirect("profile/" + current_user.get_id())
+        dbase.deletePost(id)
+    return redirect("profile/" + session['id'])
 
+@app.route('/dialog', methods=["POST", "GET"])
+@login_required
+def dialog():
+    if request.method == "GET":
+        id1 = request.args.get("id1")
+        id2 = request.args.get("id2")
+        user1 = dbase.getUser(id1)
+        user2 = dbase.getUser(id2)
+        session['mes1'] = id1
+        session['mes2'] = id2
+        if not (user1 and user2):
+            abort(404)
+    if request.method == "POST":
+        content = request.form['text']
+        dbase.addMessage(session['mes1'], session['mes2'], content)
+
+    posts = dbase.getMessages(session['mes1'], session['mes2'])
+
+    return render_template("dialog.html", posts = posts)
+
+
+@app.route('/like', methods=["POST", "GET"])
+@login_required
+def like():
+    if request.method == "GET":
+        id = request.args.get("id")
+        dbase.likePost(current_user.get_id(), id)
+    return redirect("profile/" + session['id'])
+
+@app.route('/search', methods=["POST", "GET"])
+@login_required
+def search():
+    return render_template("search.html")
 
 @app.route('/userava')
 @login_required
