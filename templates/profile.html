@@ -24,7 +24,19 @@
 		<li>Email: {{ user.email }}</li>
 		</ul>
 		{% if user.id|string() != current_user.get_id() %}
-		<a class="message" href="/dialog?id1={{current_user.get_id()}}&id2={{user.id}}">Написать сообщение</a>
+			{% if accepts|length == 2 %}
+			<a class="message" href="/dialog?id1={{current_user.get_id()}}&id2={{user.id}}">Написать сообщение</a>
+			{% endif %}
+			{% if accepts|length == 1%}
+				{% if accepts[0].id_user1 == current_user.get_id() %}
+					<p>Заявка отправлена</p>
+				{% else %}
+					<a class="message" href="/accept?id1={{current_user.get_id()}}&id2={{user.id}}">Принять заявку</a>
+				{% endif %}
+			{% endif %}
+			{% if not accepts %}
+			<a class="message" href="/accept?id1={{current_user.get_id()}}&id2={{user.id}}">Отправить заявку</a>
+			{% endif %}
 		{% else %}
 		<a class="message" href="/preferences">Выбрать предпочтения</a>
 		{% endif %}

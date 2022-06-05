@@ -149,6 +149,34 @@ class FDataBase:
             print("Ошибка получения данных из БД "+str(e))
         return False
 
+    def addAccepts(self, id_user1, id_user2):
+        try:
+            self.__cur.execute(f"INSERT INTO accepts VALUES(NULL, ?, ?)", (id_user1, id_user2))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления сообщения в БД "+str(e))
+            return False
+        return True
+
+    def getNotifications(self, id_user):
+        try:
+            self.__cur.execute(f"SELECT a.id_user1 checkedid, c.name name from accepts a LEFT JOIN accepts b ON a.id_user1 = b.id_user2 and a.id_user2 = b.id_user1 JOIN users c ON a.id_user1 = c.id where b.id_user1 is null and a.id_user2 = '{id_user}'")
+            res = self.__cur.fetchall()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+        return False
+
+
+    def getAccepts(self, id_user1, id_user2):
+        try:
+            self.__cur.execute(f"SELECT id_user1, id_user2 from accepts where id_user1 = '{id_user1}' and id_user2 = '{id_user2}' or id_user1 = '{id_user2}' and id_user2 = '{id_user1}'")
+            res = self.__cur.fetchall()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+        return False
+
     def addPreferences(self, id_user, mood, theme):
         try:
             if self.getPreferences(id_user):

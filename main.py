@@ -68,7 +68,7 @@ def close_db(error):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return redirect("login")
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -114,9 +114,12 @@ def profile(id):
     posts = dbase.getPostsById(id)
     likes = dbase.getLikesById(current_user.get_id())
     preferences = dbase.getPreferences(id)
+    accepts = None
+    if current_user.get_id() != id:
+        accepts = dbase.getAccepts(current_user.get_id(), id)
     session['id'] = id
 
-    return render_template("profile.html", title="Профиль", posts=posts, likes=likes, user = user, preferences = preferences)
+    return render_template("profile.html", title="Профиль", posts=posts, likes=likes, user = user, preferences = preferences, accepts = accepts)
 
 @app.route('/delete', methods=["POST", "GET"])
 @login_required
@@ -125,6 +128,12 @@ def delete():
         id = request.args.get("id")
         dbase.deletePost(id)
     return redirect("profile/" + session['id'])
+
+@app.route('/notifications')
+@login_required
+def notifications():
+    nots = dbase.getNotifications(current_user.get_id())
+    return render_template("notification.html", nots = nots)
 
 @app.route('/dialog', methods=["POST", "GET"])
 @login_required
@@ -145,6 +154,20 @@ def dialog():
     posts = dbase.getMessages(session['mes1'], session['mes2'])
 
     return render_template("dialog.html", posts = posts)
+
+@app.route('/accept', methods=["POST", "GET"])
+@login_required
+def accept():
+    if request.method == "GET":
+        id1 = request.args.get("id1")
+        id2 = request.args.get("id2")
+        user1 = dbase.getUser(id1)
+        user2 = dbase.getUser(id2)
+        if not (user1 and user2):
+            abort(404)
+        dbase.addAccepts(id1, id2)
+
+    return redirect("profile/" + request.args.get("id2"))
 
 
 @app.route('/like', methods=["POST", "GET"])

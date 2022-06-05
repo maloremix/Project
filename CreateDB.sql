@@ -39,4 +39,12 @@ id integer PRIMARY KEY AUTOINCREMENT,
 id_user integer,
 mood text,
 theme text
+);
+
+CREATE TABLE IF NOT EXISTS accepts(
+id integer PRIMARY KEY AUTOINCREMENT,
+id_user1,
+id_user2,
+FOREIGN KEY (id_user1) REFERENCES users(id),
+FOREIGN KEY (id_user2) REFERENCES users(id)
 )
