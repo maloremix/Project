@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+{{ super() }}
+
+{% for p in nots %}
+
+<p>Вам кинул заявку на создание чата <a href="/profile/{{p.checkedid}}">{{p.name}}</a></p>
+
+{% endfor %}
+
+{% endblock %}
