@@ -32,4 +32,11 @@ user_id2 integer,
 content text,
 FOREIGN KEY (user_id1) REFERENCES users(id),
 FOREIGN KEY (user_id2) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS Preferences(
+id integer PRIMARY KEY AUTOINCREMENT,
+id_user integer,
+mood text,
+theme text
 )

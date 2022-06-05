@@ -21,6 +21,10 @@ ul.mainmenu li {
 	float: left;
 	margin: 18px 40px 0 50px;
 }
+ul.mainmenu li.right {
+	float: right;
+	margin: 18px 40px 0 50px;
+}
 
 ul.list-posts {
 	list-style: none;

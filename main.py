@@ -113,10 +113,10 @@ def profile(id):
         abort(404)
     posts = dbase.getPostsById(id)
     likes = dbase.getLikesById(current_user.get_id())
-
+    preferences = dbase.getPreferences(id)
     session['id'] = id
 
-    return render_template("profile.html", title="Профиль", posts=posts, likes=likes, user = user)
+    return render_template("profile.html", title="Профиль", posts=posts, likes=likes, user = user, preferences = preferences)
 
 @app.route('/delete', methods=["POST", "GET"])
 @login_required
@@ -155,10 +155,23 @@ def like():
         dbase.likePost(current_user.get_id(), id)
     return redirect("profile/" + session['id'])
 
+
+@app.route('/preferences', methods=["POST", "GET"])
+@login_required
+def pref():
+    if request.method == "POST":
+        if (request.form['selectMood'] != "null" and request.form['selectTheme']):
+            dbase.addPreferences(current_user.get_id(), request.form['selectMood'], request.form['selectTheme'])
+    return render_template("search.html", title="Выбор предпочтений")
+
 @app.route('/search', methods=["POST", "GET"])
 @login_required
 def search():
-    return render_template("search.html")
+    res = None
+    if request.method == "POST":
+        if (request.form['selectMood'] != "null" and request.form['selectTheme']):
+            res = dbase.getUsersByPreferences(request.form['selectMood'], request.form['selectTheme'])
+    return render_template("search.html", res = res)
 
 @app.route('/userava')
 @login_required

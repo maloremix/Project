@@ -130,6 +130,37 @@ class FDataBase:
             return False
         return True
 
+    def getPreferences(self, user_id):
+        try:
+            self.__cur.execute(f"SELECT * FROM Preferences WHERE id = {user_id} LIMIT 1")
+            res = self.__cur.fetchone()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+
+        return False
+
+    def getUsersByPreferences(self, mood, theme):
+        try:
+            self.__cur.execute(f"SELECT id, name from users where id in (SELECT id_user from Preferences where mood = '{mood}' and theme = '{theme}')")
+            res = self.__cur.fetchall()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+        return False
+
+    def addPreferences(self, id_user, mood, theme):
+        try:
+            if self.getPreferences(id_user):
+                self.__cur.execute(f"UPDATE Preferences SET mood = ?, theme = ?  WHERE id_user = ?", (mood, theme, id_user))
+            else:
+                self.__cur.execute(f"INSERT INTO Preferences VALUES(NULL, ?, ?, ?)", (id_user, mood, theme))
+            self.__db.commit()
+        except sqlite3.Error as e:
+            print("Ошибка добавления предпочтения в БД "+str(e))
+            return False
+        return True
+
     def getMessages(self, id_user1, id_user2):
         try:
             self.__cur.execute(f"SELECT content, name from messages JOIN users ON (messages.user_id1 = users.id) where user_id1 = '{id_user1}' and user_id2 = '{id_user2}' or user_id1 = '{id_user2}' and user_id2 = '{id_user1}'")

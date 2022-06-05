@@ -3,10 +3,27 @@
 
 {% block content %}
 {{ super() }}
+<form action="" method="post">
 <p><label>Выбор настроения: </label>
-<select name="selectPosts" size="1">
+<select name="selectMood" size="1">
     <option value="null">...</option>
-    <option  value="kek">грустно</option>
-
+    <option  value="sad">Грустно</option>
+    <option  value="happy">Весело</option>
 </select>
+<p><label>Выбор темы: </label>
+<select name="selectTheme" size="1">
+    <option value="null">...</option>
+    <option  value="economics">Экономика</option>
+    <option  value="history">История</option>
+</select>
+<p><input type="submit">
+</form>
+
+{% if res %}
+
+{% for p in res %}
+<a href="/profile/{{p.id}}">{{p.name}}</a>
+{% endfor %}
+{% endif %}
+
 {% endblock %}
