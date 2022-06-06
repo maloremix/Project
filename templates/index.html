@@ -4,9 +4,9 @@
 <link type="text/css" href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
 {% block title -%}
 {% if title %}
-	<title>Про Flask - {{title}}</title>
+	<title>{{title}}</title>
 {% else %}
-	<title>Про Flask</title>
+	<title>I Feel Your Sad</title>
 {% endif %}
 {% endblock %}
 </head>
@@ -14,10 +14,18 @@
 {% block content -%}
 	{%- block mainmenu -%}
 <ul class="mainmenu">
+{% if current_user.get_id() %}
 <li><a href="/">Профиль</a></li>
+{% endif %}
+{% if not current_user.get_id() %}
 <li><a href="/login">Авторизация</a></li>
-<li><a href="/search">Поиск людей</a></li>
-<li class="right"><a href="/notifications">Уведомления</a></li>
+{% endif %}
+<li><a href="/search">Поиск собеседников</a></li>
+<li><a href="/dialogs">Мессенджер</a></li>
+{% if current_user.get_id() %}
+<li><a href="{{url_for('logout')}}">Выйти</a></li>
+{% endif %}
+<li class="right"><a href="/notifications">Заявки на создание чата</a></li>
 </ul>
 	{% endblock mainmenu -%}
 <div class="clear"></div>
@@ -25,7 +33,7 @@
 	{% if title -%}
 <h1>{{title}}</h1>
 	{% else -%}
-<h1>Про Flask</h1>
+<h1>I Feel Your Sad</h1>
 	{% endif -%}
 {% endblock -%}
 </div>

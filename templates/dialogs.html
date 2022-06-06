@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+{{ super() }}
+{% for p in dialogs %}
+<p><a href="/profile/{{p[1]}}">{{p[2]}}</a><a class="message2" href="/dialog?id1={{p[0]}}&id2={{p[1]}}">Написать сообщение</a></p>
+
+{% endfor %}
+
+{% endblock %}

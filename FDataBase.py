@@ -167,6 +167,14 @@ class FDataBase:
             print("Ошибка получения данных из БД "+str(e))
         return False
 
+    def getMessagesForDialogs(self, id_user):
+        try:
+            self.__cur.execute(f"SELECT DISTINCT user_id1, user_id2 from messages where user_id1 = '{id_user}' or user_id2 = '{id_user}'")
+            res = self.__cur.fetchall()
+            return res
+        except sqlite3.Error as e:
+            print("Ошибка получения данных из БД "+str(e))
+        return False
 
     def getAccepts(self, id_user1, id_user2):
         try:

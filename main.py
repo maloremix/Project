@@ -196,6 +196,26 @@ def search():
             res = dbase.getUsersByPreferences(request.form['selectMood'], request.form['selectTheme'])
     return render_template("search.html", res = res)
 
+@app.route('/dialogs', methods = ["POST", "GET"])
+@login_required
+def dialogs():
+    res = dbase.getMessagesForDialogs(current_user.get_id())
+    arr = []
+    for help in res:
+        if ([help['user_id1'], help['user_id2']]) in arr or ([help['user_id1'], help['user_id2']]) in arr:
+            continue
+        if (help['user_id1'] == int(current_user.get_id())):
+            arr.append([help['user_id1'], help['user_id2']])
+        else:
+            arr.append([help['user_id2'], help['user_id1']])
+
+    for k in arr:
+        user = dbase.getUser(k[1])
+        k.append(user['name'])
+
+    return render_template("dialogs.html", dialogs = arr, title="Диалоги")
+
+
 @app.route('/userava')
 @login_required
 def userava():
@@ -225,7 +245,7 @@ def upload():
         else:
             flash("Ошибка обновления аватара", "error")
 
-    return redirect(url_for('profile'))
+    return redirect(('profile/' + current_user.get_id()))
 
 @app.route('/logout')
 @login_required
